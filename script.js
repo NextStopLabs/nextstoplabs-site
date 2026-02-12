@@ -1,4 +1,6 @@
 const projectGrid = document.querySelector("#project-grid");
+const themeToggle = document.querySelector(".theme-toggle");
+const themeStorageKey = "nextstoplabs-theme";
 
 const createProjectCard = (project) => {
   const card = document.createElement("article");
@@ -12,6 +14,17 @@ const createProjectCard = (project) => {
 
   const actions = document.createElement("div");
   actions.className = "card-actions";
+
+  let meta = null;
+  if (project.status) {
+    meta = document.createElement("div");
+    meta.className = "meta-list";
+
+    const status = document.createElement("span");
+    status.className = "meta-pill";
+    status.textContent = project.status;
+    meta.appendChild(status);
+  }
 
   if (project.website) {
     const websiteLink = document.createElement("a");
@@ -37,6 +50,9 @@ const createProjectCard = (project) => {
 
   card.appendChild(heading);
   card.appendChild(summary);
+  if (meta) {
+    card.appendChild(meta);
+  }
   card.appendChild(actions);
 
   return card;
@@ -86,3 +102,30 @@ const loadProjects = async () => {
 };
 
 loadProjects();
+
+const applyTheme = (theme) => {
+  if (!document.body || !themeToggle) {
+    return;
+  }
+
+  if (theme === "light") {
+    document.body.dataset.theme = "light";
+    themeToggle.textContent = "Dark mode";
+    themeToggle.setAttribute("aria-pressed", "false");
+  } else {
+    document.body.removeAttribute("data-theme");
+    themeToggle.textContent = "Light mode";
+    themeToggle.setAttribute("aria-pressed", "true");
+  }
+};
+
+const storedTheme = localStorage.getItem(themeStorageKey);
+applyTheme(storedTheme || "dark");
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const nextTheme = document.body.dataset.theme === "light" ? "dark" : "light";
+    localStorage.setItem(themeStorageKey, nextTheme);
+    applyTheme(nextTheme);
+  });
+}
