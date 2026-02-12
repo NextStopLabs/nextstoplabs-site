@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project | NextStop Labs</title>
+    <meta name="description" content="NextStop Labs project details." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <a class="card-button" href="index.html">Back to home</a>
+      <section class="section project-hero" id="project-detail" aria-live="polite"></section>
+    </main>
+
+    <footer class="footer">
+      <p>NextStop Labs</p>
+      <p>Builds for people who ride.</p>
+    </footer>
+
+    <script>
+      const detailRoot = document.querySelector("#project-detail");
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get("project");
+
+      const renderProject = (project) => {
+        if (!detailRoot) {
+          return;
+        }
+
+        detailRoot.innerHTML = "";
+
+        const header = document.createElement("div");
+        header.className = "project-hero";
+
+        const title = document.createElement("h1");
+        title.textContent = project.name;
+
+        const tagline = document.createElement("p");
+        tagline.className = "lead";
+        tagline.textContent = project.tagline || project.summary || "";
+
+        const description = document.createElement("p");
+        description.textContent = project.description || project.summary || "";
+
+        const meta = document.createElement("div");
+        meta.className = "meta-list";
+
+        if (project.status) {
+          const status = document.createElement("span");
+          status.className = "meta-pill";
+          status.textContent = project.status;
+          meta.appendChild(status);
+        }
+
+        header.appendChild(title);
+        header.appendChild(tagline);
+        header.appendChild(meta);
+        header.appendChild(description);
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        if (project.website) {
+          const websiteLink = document.createElement("a");
+          websiteLink.className = "card-button";
+          websiteLink.href = project.website;
+          websiteLink.textContent = "Visit site";
+          actions.appendChild(websiteLink);
+        }
+
+        if (project.repo) {
+          const repoLink = document.createElement("a");
+          repoLink.className = "card-button";
+          repoLink.href = project.repo;
+          repoLink.textContent = "View repo";
+          actions.appendChild(repoLink);
+        }
+
+        detailRoot.appendChild(header);
+        detailRoot.appendChild(actions);
+      };
+
+      const renderMissing = () => {
+        if (!detailRoot) {
+          return;
+        }
+        detailRoot.innerHTML =
+          "<h1>Project not found</h1><p class=\"lead\">Please return to the home page and pick a project.</p>";
+      };
+
+      const loadProject = async () => {
+        if (!slug) {
+          renderMissing();
+          return;
+        }
+
+        try {
+          const response = await fetch("projects.json");
+          if (!response.ok) {
+            throw new Error("Could not load projects.");
+          }
+          const projects = await response.json();
+          const project = projects.find((item) => item.slug === slug);
+          if (!project) {
+            renderMissing();
+            return;
+          }
+          renderProject(project);
+        } catch (error) {
+          renderMissing();
+        }
+      };
+
+      loadProject();
+    </script>
+  </body>
+</html>

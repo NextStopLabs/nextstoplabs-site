@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "mybustimes",
+    "name": "MyBusTimes",
+    "tagline": "Fictional bus operations for simulation fans.",
+    "summary": "A fictional bus simulation platform where users create and manage simulated operators.",
+    "description": "MyBusTimes is a community-driven simulation where transport enthusiasts can build virtual operators, share liveries, and explore fleet ideas in a fictional world.",
+    "website": "https://www.mybustimes.cc",
+    "repo": "https://github.com/NextStopLabs/MyBusTimes",
+    "status": "Active",
+    "pin": true
+  },
+  {
+    "slug": "vtm-t200",
+    "name": "VTM-T200",
+    "tagline": "Realistic ETM simulation for virtual fleets.",
+    "summary": "An Electronic Ticket Machine simulator for virtual bus fleets, with route and fare selection, trip reporting, and real-time status monitoring.",
+    "description": "VTM-T200 lets virtual operators practice ticketing workflows with route selection, fares, announcements, and reporting, all in a simulation-only environment where no money is ever spent.",
+    "website": "https://t200.vtm.nextstoplabs.org",
+    "repo": "https://github.com/NextStopLabs/MBT_ETM-T200",
+    "status": "Coming Soon",
+    "pin": true
+  },
+  {
+    "slug": "vtm-tp5800",
+    "name": "VTM-TP5800",
+    "tagline": "Ticketing simulation for virtual operations.",
+    "summary": "A virtual ticket machine simulator focused on classic hardware flows for transport hobbyists.",
+    "description": "VTM-TP5800 recreates traditional ticketing experiences for virtual fleets, built for enthusiasts who want to explore professional transit operations in a safe, fictional setting.",
+    "repo": "https://github.com/NextStopLabs/MBT_ETM-TP5800",
+    "status": "Coming Soon",
+    "pin": false
+  },
+  {
+    "slug": "mybustimes-tracking",
+    "name": "MyBusTimes Tracking Engine",
+    "tagline": "Simulation tracking for MyBusTimes.",
+    "summary": "A tracking engine that powers simulated vehicle movement inside the MyBusTimes ecosystem.",
+    "description": "The tracking engine provides simulation-ready location updates and status changes for virtual fleets in the MyBusTimes platform.",
+    "repo": "https://github.com/NextStopLabs/MyBusTimes-Tracking",
+    "status": "Active",
+    "pin": false
+  }
+]
