@@ -11,6 +11,17 @@
     "pin": true
   },
   {
+    "slug": "spotted",
+    "name": "Spotted",
+    "tagline": "Transport photos.",
+    "summary": "Spotted is a transport social media platform.",
+    "description": "Spotted is a transport social media platform for general transport enthusiasts. Spotted also has a section for people to upload mods that they have made for games such as OMSI2.",
+    "website": "https://spotted.nextstoplabs.org",
+    "repo": "https://github.com/NextStopLabs/MyBusTimes",
+    "status": "Active",
+    "pin": true
+  }
+  {
     "slug": "vtm-t200",
     "name": "VTM-T200",
     "tagline": "Realistic ETM simulation for virtual fleets.",
