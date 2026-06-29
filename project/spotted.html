@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotted — Next Stop Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="project.css">
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            <div class="logo-name">
+                <img width="150" src="/src/NSL/PNG/Next Stop Labs Full Logo.png" alt="Next Stop Labs">
+            </div>
+        </div>
+        <div class="nav-r">
+            <a href="/">Projects</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+    </nav>
+
+    <div class="wrap">
+
+        <div class="back-bar">
+            <a class="back-link" href="/">← All projects</a>
+        </div>
+
+        <div class="project-header">
+            <div class="project-header-left">
+
+                <div class="project-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <rect x="3" y="3" width="18" height="18" rx="3" stroke="#0d1f34" stroke-width="1.5"/>
+                        <circle cx="12" cy="12" r="4" stroke="#0d1f34" stroke-width="1.5"/>
+                        <circle cx="12" cy="12" r="1.5" fill="#0d1f34"/>
+                    </svg>
+                </div>
+
+                <div class="project-title-group">
+                    <div class="project-eyebrow">SOCIAL / NEXTSTOPLABS.ORG</div>
+                    <div class="project-name">Spotted</div>
+                    <p class="project-desc">
+                        Transport photography, stripped down. Post what you've seen — buses, trains, trams, whatever's rolling through your town.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="project-header-right">
+                <span class="row-type">SOCIAL</span>
+                <div class="row-status">
+                    <div class="status-dot-g"></div>
+                    <span class="status-live">Live</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="links-bar">
+            <a class="btn btn-primary" href="https://spotted.nextstoplabs.org" target="_blank">Visit Spotted ↗</a>
+        </div>
+
+        <div class="desc-section">
+            <p>
+                There are plenty of places to post transport photos, but most of them are either too noisy or too dead. Spotted sits somewhere in the middle — a feed of transport shots from people who actually care what model that bus is.
+            </p>
+            <p>
+                No algorithms, no ads, no engagement bait. Just a timeline of your latest finds and a way to see what other people have spotted nearby.
+            </p>
+        </div>
+
+        <div class="section">
+            <div class="section-label">SCREENSHOTS</div>
+
+            <div class="carousel" id="screenshot-carousel">
+                <div class="carousel-slide active">
+                    <img src="/src/Spotted/screenshots/post.png" alt="Post feed">
+                </div>
+                <div class="carousel-slide">
+                    <img src="/src/Spotted/screenshots/profile.png" alt="User profile">
+                </div>
+                <div class="carousel-dots"></div>
+            </div>
+
+            <div class="thumb-strip" id="thumb-strip"></div>
+        </div>
+
+        <div class="fs-overlay" id="fs-overlay">
+            <button class="fs-close" id="fs-close">✕</button>
+            <img id="fs-img" src="" alt="">
+        </div>
+
+    </div>
+
+    <footer>
+        <span>nextstoplabs.org</span>
+    </footer>
+
+    <script>
+        (function() {
+            var carousel = document.getElementById('screenshot-carousel');
+            var slides = carousel.querySelectorAll('.carousel-slide');
+            var dotsContainer = carousel.querySelector('.carousel-dots');
+            var thumbStrip = document.getElementById('thumb-strip');
+            var fsOverlay = document.getElementById('fs-overlay');
+            var fsImg = document.getElementById('fs-img');
+            var fsClose = document.getElementById('fs-close');
+            var current = 0;
+            var interval;
+
+            var images = [
+                '/src/Spotted/screenshots/post.png',
+                '/src/Spotted/screenshots/profile.png'
+            ];
+
+            var labels = [
+                'Post feed',
+                'User profile'
+            ];
+
+            function goTo(index) {
+                slides[current].classList.remove('active');
+                dots[current].classList.remove('active');
+                thumbStrip.children[current].classList.remove('active');
+                current = index;
+                slides[current].classList.add('active');
+                dots[current].classList.add('active');
+                thumbStrip.children[current].classList.add('active');
+                resetInterval();
+            }
+
+            function next() {
+                goTo((current + 1) % slides.length);
+            }
+
+            function resetInterval() {
+                clearInterval(interval);
+                interval = setInterval(next, 4000);
+            }
+
+            for (var i = 0; i < slides.length; i++) {
+                var dot = document.createElement('button');
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('aria-label', 'Screenshot ' + (i + 1));
+                dot.onclick = (function(index) {
+                    return function() { goTo(index); };
+                })(i);
+                dotsContainer.appendChild(dot);
+            }
+
+            var dots = dotsContainer.querySelectorAll('.carousel-dot');
+
+            for (var i = 0; i < images.length; i++) {
+                var btn = document.createElement('button');
+                btn.className = i === 0 ? 'active' : '';
+                btn.onclick = (function(index) {
+                    return function() { goTo(index); };
+                })(i);
+                var img = document.createElement('img');
+                img.src = images[i];
+                img.alt = labels[i];
+                btn.appendChild(img);
+                thumbStrip.appendChild(btn);
+            }
+
+            carousel.addEventListener('click', function() {
+                fsImg.src = images[current];
+                fsOverlay.classList.add('open');
+            });
+
+            fsClose.addEventListener('click', function() {
+                fsOverlay.classList.remove('open');
+            });
+
+            fsOverlay.addEventListener('click', function(e) {
+                if (e.target === fsOverlay) {
+                    fsOverlay.classList.remove('open');
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    fsOverlay.classList.remove('open');
+                }
+            });
+
+            interval = setInterval(next, 4000);
+        })();
+    </script>
+
+</body>
+
+</html>

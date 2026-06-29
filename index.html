@@ -1,86 +1,534 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Next Stop Labs</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2779490658468719" crossorigin="anonymous"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --bg: #090914;
+            --panel: #080d18;
+            --row: #080d18;
+            --row-alt: #0c1422;
+            --steel: #449cff;
+            --steel-dim: #0d1f34;
+            --gray: #9ea5b5;
+            --gray-dim: #0d1f34;
+            --text: #dddcdd;
+            --mono: 'DM Mono', monospace;
+            --display: 'Syne', sans-serif;
+            --rule: #ffffff0d;
+        }
+
+        body {
+            background: var(--panel);
+            color: var(--text);
+            font-family: var(--mono);
+            min-height: 100vh
+        }
+
+        /* NAV */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 40px;
+            border-bottom: 1px solid var(--rule);
+            background: var(--bg);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .logo-stripes {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            width: 24px
+        }
+
+        .ls {
+            height: 2px;
+            border-radius: 1px
+        }
+
+        .logo-name {
+            font-family: var(--display);
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: -0.3px
+        }
+
+        .logo-name span {
+            color: var(--steel)
+        }
+
+        .nav-r {
+            display: flex;
+            gap: 28px;
+            font-size: 11px;
+            color: var(--gray);
+            letter-spacing: 0.08em
+        }
+
+        .nav-r a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        .nav-r a:hover {
+            color: var(--text)
+        }
+
+        .hero-background {
+            background: var(--panel);
+            border-bottom: 1px solid var(--rule)
+        }
+
+        /* HERO */
+        .hero-row {
+            padding: 32px 40px 28px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero-station {
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            color: var(--steel);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-station::before {
+            content: '';
+            display: block;
+            width: 3px;
+            height: 12px;
+            background: var(--steel);
+            border-radius: 1px
+        }
+
+        .hero-hl {
+            font-size: 22px;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+            color: var(--text);
+            line-height: 1.45;
+            max-width: 600px;
+        }
+
+        .hero-sub {
+            margin-top: 10px;
+            font-size: 12px;
+            line-height: 1.7;
+            color: var(--gray);
+            max-width: 500px;
+        }
+
+        .hero-meta {
+            margin-top: 20px;
+            display: flex;
+            gap: 0;
+            border: 1px solid var(--rule);
+            width: fit-content;
+        }
+
+        .hm {
+            padding: 8px 20px;
+            border-right: 1px solid var(--rule)
+        }
+
+        .hm:last-child {
+            border-right: none
+        }
+
+        .hm-l {
+            font-size: 9px;
+            letter-spacing: 0.14em;
+            color: var(--gray);
+            margin-bottom: 3px
+        }
+
+        .hm-v {
+            font-size: 13px;
+            color: var(--text);
+            font-weight: 500
+        }
+
+        /* BOARD */
+        /* Shared column definition — single source of truth */
+        .board-head,
+        .board-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 140px 130px 220px;
+            align-items: center;
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        .board-header {
+            background: var(--panel);
+            border-bottom: 2px solid var(--steel-dim);
+        }
+
+        .board-head {
+            height: 36px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .col-label {
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            color: var(--gray)
+        }
+
+        .board {
+            border-bottom: 1px solid var(--rule)
+        }
+
+        .board-row {
+            min-height: 72px;
+            cursor: pointer;
+            transition: background 0.1s;
+            text-decoration: none;
+            color: inherit;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .board-background:nth-child(odd) {
+            background: var(--row);
+            border-bottom: 1px solid var(--rule);
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        .board-background:nth-child(even) {
+            background: var(--row-alt)
+        }
+
+        .board-background:hover {
+            background: #3f7abf0a
+        }
+
+        .board-row:hover .row-arrow {
+            opacity: 1;
+            transform: translateX(0)
+        }
+
+        .cell {
+            padding: 14px 16px 14px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center
+        }
+
+        .cell-icon {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px 14px 0;
+        }
+
+        .cell-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 14px 0;
+        }
+
+        /* Icon placeholder */
+        .icon-placeholder {
+            width: 36px;
+            height: 36px;
+            border: 1px dashed var(--gray-dim);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .icon-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 3px
+        }
+
+        .row-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 3px;
+            letter-spacing: -0.2px
+        }
+
+        .row-sub {
+            font-size: 10px;
+            color: var(--gray);
+            letter-spacing: 0.06em
+        }
+
+        .row-type {
+            display: inline-block;
+            font-size: 9px;
+            letter-spacing: 0.12em;
+            color: var(--steel);
+            border: 1px solid var(--steel-dim);
+            padding: 3px 8px;
+            width: fit-content;
+        }
+
+        .row-status {
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            display: flex;
+            align-items: center;
+            gap: 5px
+        }
+
+        .status-live { color: #4ade80 }
+        .status-dot-g { width: 4px; height: 4px; border-radius: 50%; background: #4ade80 }
+        .status-wip { color: var(--gray) }
+        .status-dot-d { width: 4px; height: 4px; border-radius: 50%; background: var(--gray) }
+
+        /* Action buttons */
+        .btn {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.12em;
+            padding: 5px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.1s, color 0.1s, border-color 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--gray);
+            border: 1px solid var(--gray-dim);
+        }
+
+        .btn-ghost:hover {
+            color: var(--text);
+            border-color: var(--gray);
+        }
+
+        .btn-primary {
+            background: var(--steel-dim);
+            color: var(--steel);
+            border: 1px solid var(--steel-dim);
+        }
+
+        .btn-primary:hover {
+            background: #1d3f6b;
+            color: #c8dff5;
+            border-color: var(--steel-dim);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--gray);
+            letter-spacing: 0.08em;
+            border-top: 1px solid var(--rule);
+        }
+
+        .f-stripes {
+            display: flex;
+            gap: 3px;
+            align-items: center
+        }
+
+        .fst { height: 2px; border-radius: 1px }
+
+        #clock { font-variant-numeric: tabular-nums }
+    </style>
 </head>
+
 <body>
 
-    <header>
-        <nav>
-            <div class="brand">
-                <img src="https://avatars.githubusercontent.com/u/202529866?s=200&v=4" alt="Logo" class="logo">
-                <span>Next Stop Labs</span>
-            </div>
-            <ul>
-                <li><a href="https://github.com/nextstoplabs">Our GitHub</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Next Stop Labs</h1>
-            <p>We're a small team building tools and sims for the transport community. From management sims to spotting apps, we just build things we want to use.</p>
+    <nav>
+        <div class="logo">
+            <div class="logo-name"><img width="150" src="/src/NSL/PNG/Next Stop Labs Full Logo.png" alt="Next Stop Labs"></div>
         </div>
-    </section>
+        <div class="nav-r">
+            <a href="#">Projects</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+    </nav>
 
-    <div class="ad-wrapper">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-format="fluid"
-             data-ad-layout-key="-fb+5w+4e-db+86"
-             data-ad-client="ca-pub-2779490658468719"
-             data-ad-slot="7676072046"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <main id="projects">
-        <section id="mtt" class="main-feature">
-            <div class="feature-text">
-                <span class="tag">The big one</span>
-                <h2>My Transport Times</h2>
-                <p>This used to be <strong>MyBusTimes</strong>. It’s a simulation where you actually run the buses. You set up your own operator, sort the routes, and try not to let the whole thing fall apart.</p>
-                <a href="https://www.mytransporttimes.org" class="link-btn">Give it a go &rarr;</a><br>
-                <a href="/mtt.html" class="link-btn secondary">Read more &rarr;</a>
-            </div>
-        </section>
-
-        <div class="grid">
-            <div class="glass-card">
-                <h3>Spotted</h3>
-                <p>Basically a place to dump your transport photos. Post what you’ve seen out and about and see what everyone else is spotting.</p>
-                <a href="https://spotted.nextstoplabs.org/" class="link-btn">Check it out &rarr;</a>
-            </div>
-
-            <div class="glass-card">
-                <h3>VTM-T200</h3>
-                <p>We recreated the Ticketer UI because we wanted one. It links up with MTT so you can actually "issue" tickets in the sim.</p>
-                <a href="https://t200.nextstoplabs.org/" class="link-btn">Check it out &rarr;</a>
-            </div>
-
-            <div class="glass-card">
-                <h3>Transport Statistics</h3>
-                <p>A simple way to log your trips. If you spend your weekends on buses and trains, this helps you keep track of where you've actually been.</p>
-                <a href="https://transportstatistics.com" class="link-btn">Check it out &rarr;</a><br>
-                <a href="/transportstatistics.html" class="link-btn secondary">Read more &rarr;</a>
+    <div class="hero-background">
+        <div class="hero-row">
+            <div class="hero-station">NEXTSTOPLABS.ORG / OPERATOR OVERVIEW</div>
+            <p class="hero-hl">Small team, too many ideas,<br>not enough sleep.</p>
+            <p class="hero-sub">A lot of time spent on buses and trains that probably should've been spent on something
+                else. We build the tools we wished existed.</p>
+            <div class="hero-meta">
+                <div class="hm">
+                    <div class="hm-l">OPERATOR</div>
+                    <div class="hm-v">Next Stop Labs</div>
+                </div>
+                <div class="hm">
+                    <div class="hm-l">PROJECTS</div>
+                    <div class="hm-v">4 active</div>
+                </div>
+                <div class="hm">
+                    <div class="hm-l">STATUS</div>
+                    <div class="hm-v" style="color:#4ade80">Running, Ish</div>
+                </div>
             </div>
         </div>
-    </main>
-
-    <div class="ad-wrapper">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-format="fluid"
-             data-ad-layout-key="-fb+5w+4e-db+86"
-             data-ad-client="ca-pub-2779490658468719"
-             data-ad-slot="7676072046"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
+
+    <div class="board-header">
+        <div class="board-head">
+            <div></div>
+            <div class="col-label">Project name</div>
+            <div class="col-label">Type</div>
+            <div class="col-label">Status</div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="board">
+
+        <!-- ROW: My Transport Times -->
+        <div class="board-background">
+            <div class="board-row">
+                <div class="cell-icon">
+                    <img src="/src/MTT/PNG/Icon.png" width="36" height="36" alt="My Transport Times" style="border-radius:4px">
+                </div>
+                <div class="cell">
+                    <div class="row-name">My Transport Times</div>
+                    <div class="row-sub">FORMERLY MYBUS TIMES — bus operations sim</div>
+                </div>
+                <div class="cell"><span class="row-type">SIMULATION</span></div>
+                <div class="cell">
+                    <div class="row-status">
+                        <div class="status-dot-g"></div><span class="status-live">Live</span>
+                    </div>
+                </div>
+                <div class="cell-actions">
+                    <a class="btn btn-ghost" href="project/mtt.html">More info</a>
+                    <a class="btn btn-primary" href="https://mytransporttimes.com" target="_blank">Visit ↗</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW: Spotted -->
+        <div class="board-background">
+            <div class="board-row">
+                <div class="cell-icon">
+                    <div class="icon-placeholder">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="#3e4048" stroke-width="1.5" />
+                            <path d="M5 8h6M8 5v6" stroke="#3e4048" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="row-name">Spotted</div>
+                    <div class="row-sub">TRANSPORT PHOTOGRAPHY — post what you've seen</div>
+                </div>
+                <div class="cell"><span class="row-type">SOCIAL</span></div>
+                <div class="cell">
+                    <div class="row-status">
+                        <div class="status-dot-g"></div><span class="status-live">Live</span>
+                    </div>
+                </div>
+                <div class="cell-actions">
+                    <a class="btn btn-ghost" href="project/spotted.html">More info</a>
+                    <a class="btn btn-primary" href="https://spotted.nextstoplabs.org" target="_blank">Visit ↗</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW: VTM-T200 -->
+        <div class="board-background">
+            <div class="board-row">
+                <div class="cell-icon">
+                    <div class="icon-placeholder">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="#3e4048" stroke-width="1.5" />
+                            <path d="M5 8h6M8 5v6" stroke="#3e4048" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="row-name">VTM-T200</div>
+                    <div class="row-sub">TICKETING MACHINE UI — links with MTT</div>
+                </div>
+                <div class="cell"><span class="row-type">HARDWARE SIM</span></div>
+                <div class="cell">
+                    <div class="row-status">
+                        <div class="status-dot-g"></div><span class="status-live">Live</span>
+                    </div>
+                </div>
+                <div class="cell-actions">
+                    <a class="btn btn-ghost" href="project/vtm-t200.html">More info</a>
+                    <a class="btn btn-primary" href="https://t200.nextstoplabs.org" target="_blank">Visit ↗</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW: Transport Statistics -->
+        <div class="board-background">
+            <div class="board-row">
+                <div class="cell-icon">
+                    <img src="/src/TS/web-app-manifest-512x512.png" width="36" height="36" alt="Transport Statistics" style="border-radius:4px">
+                </div>
+                <div class="cell">
+                    <div class="row-name">Transport Statistics</div>
+                    <div class="row-sub">TRIP LOGGER — keep track of where you've been</div>
+                </div>
+                <div class="cell"><span class="row-type">UTILITY</span></div>
+                <div class="cell">
+                    <div class="row-status">
+                        <div class="status-dot-g"></div><span class="status-live">Live</span>
+                    </div>
+                </div>
+                <div class="cell-actions">
+                    <a class="btn btn-ghost" href="project/transport-statistics.html">More info</a>
+                    <a class="btn btn-primary" href="https://v2.transportstatistics.com" target="_blank">Visit ↗</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <span>nextstoplabs.org</span>
+    </footer>
 </body>
+
 </html>
